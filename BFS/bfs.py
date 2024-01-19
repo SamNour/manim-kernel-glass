@@ -1,5 +1,6 @@
 from manimlib.imports import *
 import random
+
 np.random.seed(0)
 # Define your colors here
 DARK_BLUE_B = '#00008B'  # Hexadecimal color code
@@ -188,6 +189,7 @@ class GraphAnimationUtils(Scene):
 		node_2 = GraphNode('2', position=DOWN * 3 + LEFT, radius=radius, scale=scale)
 		node_3 = GraphNode('3', position=DOWN * 1 + RIGHT, radius=radius, scale=scale)
 		node_4 = GraphNode('4', position=DOWN * 1 + RIGHT * 3, radius=radius, scale=scale)
+		node_5 = GraphNode('5', position=DOWN * 1 + RIGHT * 3, radius=radius, scale=scale)
 
 
 		edges[(0, 1)] = node_0.connect(node_1)
@@ -199,12 +201,16 @@ class GraphAnimationUtils(Scene):
 		edges[(2, 3)] = node_2.connect(node_3)
 
 		edges[(3, 4)] = node_3.connect(node_4)
+		edges[(4, 5)] = node_3.connect(node_4)
+		edges[(2, 5)] = node_3.connect(node_4)
+		edges[(0, 5)] = node_3.connect(node_4)
 
 		graph.append(node_0)
 		graph.append(node_1)
 		graph.append(node_2)
 		graph.append(node_3)
 		graph.append(node_4)
+		graph.append(node_5)
 
 		return graph, edges
 
@@ -558,8 +564,8 @@ class BFSIntuitionPart1(GraphAnimationUtils):
 	def create_string_from_edge(self, edge):
 		path = VMobject()
 		points = [edge.point_from_proportion(m) for m in np.arange(0, 1.1, 0.25)]
-		points[1] += edge.get_unit_normals()[0] * 0.2
-		points[3] += edge.get_unit_normals()[1] * 0.2
+		points[1] += edge.get_unit_vector()[0] * 0.2
+		points[3] += edge.get_unit_ve()[1] * 0.2
 		path.set_points_smoothly([*points])
 		path.set_color(GRAY)
 		return path
@@ -742,8 +748,8 @@ class BFSImplementation(GraphAnimationUtils):
 
 	def iterative_implementation(self):
 		title = TextMobject("Header Lookup Implementation")
-		title[0][:3].set_color(MONOKAI_BLUE)
-		title[0][3:15].set_color(MONOKAI_GREEN)
+		# title[0][:3].set_color(MONOKAI_BLUE)
+		# title[0][3:15].set_color(MONOKAI_GREEN)
 		title.scale(1.2)
 		title.shift(UP * 3.5)
 
@@ -776,7 +782,7 @@ class BFSImplementation(GraphAnimationUtils):
 			Transform(entire_graph, entire_graph_copy)
 		)
 
-		order = TextMobject(r"$\text{HeaderLookup}(G, 0)$:", " 0 1 3 2 4")
+		order = TextMobject(r"$\text{headerLookup}(G, 0)$:", " 0 1 3 2 4")
 		order.next_to(entire_graph, DOWN)
 		self.play(
 			Write(order[0])
@@ -1212,7 +1218,7 @@ class BFSImplementation(GraphAnimationUtils):
 		line_4[0][:5].set_color(MONOKAI_PINK)
 		code.append(line_4)
 
-		line_5 = TextMobject(r"visit($v$)")
+		line_5 = TextMobject(r"syscallHunter($v$)")
 		line_5[0][:5].set_color(MONOKAI_BLUE)
 		line_5.scale(code_scale)
 		line_5.next_to(line_4, DOWN * 0.5)
@@ -1249,12 +1255,6 @@ class BFSImplementation(GraphAnimationUtils):
 		line_9.to_edge(LEFT * 6)
 		code.append(line_9)
 
-		line_10 = TextMobject(r"syscallHunter($w$)")
-		line_10[0][:13].set_color(MONOKAI_BLUE)
-		line_10.scale(code_scale)
-		line_10.next_to(line_9, DOWN * 0.5)
-		line_10.to_edge(LEFT * 6)
-		code.append(line_10)
 
 		code = VGroup(*code)
 		code.scale(0.9)
@@ -1312,9 +1312,6 @@ class BFSImplementation(GraphAnimationUtils):
 			Write(code[10])
 		)
 		
-		self.play(
-			Write(code[11])
-		)
 
 		return code
 
