@@ -195,15 +195,9 @@ class GraphAnimationUtils(Scene):
 		edges[(0, 1)] = node_0.connect(node_1)
 		edges[(0, 3)] = node_0.connect(node_3)
 		edges[(0, 2)] = node_0.connect(node_2)
-
 		edges[(1, 3)] = node_1.connect(node_3)
-
 		edges[(2, 3)] = node_2.connect(node_3)
-
 		edges[(3, 4)] = node_3.connect(node_4)
-		edges[(4, 5)] = node_3.connect(node_4)
-		edges[(2, 5)] = node_3.connect(node_4)
-		edges[(0, 5)] = node_3.connect(node_4)
 
 		graph.append(node_0)
 		graph.append(node_1)
@@ -531,7 +525,7 @@ class BFSIntuitionPart1(GraphAnimationUtils):
 		self.wait(3)
 		self.play(
 			*[ReplacementTransform(old, new) for old, new in zip(nodes, t_nodes)],
-			*[ReplacementTransform(string_edge_dict[key], t_edge_dict[key]) for key in string_edge_dict],
+			*[ReplacementTransform(string_edge_dict[key], t_edge_dict[key]) for key in string_edge_dict if key in t_edge_dict and key in string_edge_dict],
 			ReplacementTransform(start, new_start),
 			run_time=3
 		)
@@ -565,7 +559,7 @@ class BFSIntuitionPart1(GraphAnimationUtils):
 		path = VMobject()
 		points = [edge.point_from_proportion(m) for m in np.arange(0, 1.1, 0.25)]
 		points[1] += edge.get_unit_vector()[0] * 0.2
-		points[3] += edge.get_unit_ve()[1] * 0.2
+		points[3] += edge.get_unit_vector()[1] * 0.2
 		path.set_points_smoothly([*points])
 		path.set_color(GRAY)
 		return path
@@ -581,17 +575,19 @@ class BFSIntuitionPart1(GraphAnimationUtils):
 		node_3 = GraphNode('3', position=DOWN * 1.5, radius=radius, scale=scale)
 		node_4 = GraphNode('4', position=LEFT * 3 + DOWN * 1.5, radius=radius, scale=scale)
 		node_5 = GraphNode('5', position=RIGHT * 3 + DOWN * 1.5, radius=radius, scale=scale)
+		node_6 = GraphNode('6', position=LEFT * 3 + DOWN * 3, radius=radius, scale=scale)
+		node_7 = GraphNode('7', position=DOWN * 3 , radius=radius, scale=scale)
 
 		edges[(0, 4)] = node_0.connect(node_4)
 		edges[(0, 3)] = node_0.connect(node_3)
 		edges[(0, 2)] = node_0.connect(node_2)
 		edges[(0, 1)] = node_0.connect(node_1)
-
 		edges[(1, 5)] = node_1.connect(node_5)
-
 		edges[(2, 4)] = node_2.connect(node_4)
-
 		edges[(3, 5)] = node_3.connect(node_5)
+		edges[(4, 6)] = node_4.connect(node_6)
+		edges[(3, 7)] = node_3.connect(node_7)
+		edges[(1, 7)] = node_1.connect(node_7)
 
 		graph.append(node_0)
 		graph.append(node_1)
@@ -599,6 +595,8 @@ class BFSIntuitionPart1(GraphAnimationUtils):
 		graph.append(node_3)
 		graph.append(node_4)
 		graph.append(node_5)
+		graph.append(node_6)
+		graph.append(node_7)
 
 		return graph, edges
 
@@ -612,18 +610,20 @@ class BFSIntuitionPart1(GraphAnimationUtils):
 		node_2 = GraphNode('2', position=LEFT * 3, radius=radius, scale=scale)
 		node_3 = GraphNode('3', position=RIGHT * 1, radius=radius, scale=scale)
 		node_4 = GraphNode('4', position=LEFT * 1, radius=radius, scale=scale)
-		node_5 = GraphNode('5', position=RIGHT * 2 + DOWN * 2.5, radius=radius, scale=scale)
+		node_5 = GraphNode('5', position=RIGHT * 3 + DOWN * 2.5, radius=radius, scale=scale)
+		node_6 = GraphNode('6', position=LEFT * 1 + DOWN * 2.5, radius=radius, scale=scale)
+		node_7 = GraphNode('7', position=RIGHT * 1 + DOWN * 2.5, radius=radius, scale=scale)
 
 		edges[(0, 4)] = node_0.connect(node_4)
 		edges[(0, 3)] = node_0.connect(node_3)
 		edges[(0, 2)] = node_0.connect(node_2)
 		edges[(0, 1)] = node_0.connect(node_1)
-
 		edges[(1, 5)] = node_1.connect(node_5)
-
 		edges[(2, 4)] = node_2.connect_curve(node_4)
-
 		edges[(3, 5)] = node_3.connect(node_5)
+		edges[(4, 6)] = node_4.connect(node_6)
+		edges[(3, 7)] = node_3.connect(node_7)
+		edges[(1, 7)] = node_1.connect(node_7)
 
 		graph.append(node_0)
 		graph.append(node_1)
@@ -631,6 +631,8 @@ class BFSIntuitionPart1(GraphAnimationUtils):
 		graph.append(node_3)
 		graph.append(node_4)
 		graph.append(node_5)
+		graph.append(node_6)
+		graph.append(node_7)
 
 		return graph, edges
 
